@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserdetailsRepository::class)]
 class Userdetails
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    ##[ORM\Id]
+//    #[ORM\GeneratedValue]
+//    #[ORM\Column]
+//    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
@@ -25,13 +25,15 @@ class Userdetails
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
-    #[ORM\OneToOne(mappedBy: 'user_details', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
+    #[ORM\Id]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'userdetails')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
+    private User $user;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+//    public function getId(): ?int
+//    {
+//        return $this->id;
+//    }
 
     public function getFirstName(): ?string
     {

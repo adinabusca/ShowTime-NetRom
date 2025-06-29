@@ -15,35 +15,35 @@ class Purchase
 
     #[ORM\ManyToOne(inversedBy: 'purchases')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'purchases')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?festival $festival = null;
+    private ?Festival $festival = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getFestival(): ?festival
+    public function getFestival(): ?Festival
     {
         return $this->festival;
     }
 
-    public function setFestival(?festival $festival): static
+    public function setFestival(?Festival $festival): static
     {
         $this->festival = $festival;
 

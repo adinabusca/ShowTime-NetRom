@@ -30,9 +30,8 @@ class User
     #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'user')]
     private Collection $purchases;
 
-    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?userdetails $user_details = null;
+    #[ORM\OneToOne(targetEntity: Userdetails::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Userdetails $userdetails = null;
 
     public function __construct()
     {
@@ -110,14 +109,14 @@ class User
         return $this;
     }
 
-    public function getUserDetails(): ?userdetails
+    public function getUserDetails(): ?Userdetails
     {
-        return $this->user_details;
+        return $this->userdetails;
     }
 
-    public function setUserDetails(userdetails $user_details): static
+    public function setUserDetails(Userdetails $userdetails): static
     {
-        $this->user_details = $user_details;
+        $this->userdetails = $userdetails;
 
         return $this;
     }

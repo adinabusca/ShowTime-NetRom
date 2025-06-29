@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artists{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            background-color: #0a1a2f;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #132744;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #2d3e50;
+            text-align: left;
+        }
+        th {
+            background-color: #1f3a5f;
+        }
+        tr:hover {
+            background-color: #2b486a;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding-left: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a, .pagination span {
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            background: #1f3a5f;
+            border-radius: 4px;
+        }
+        .pagination .current {
+            background: #4a90e2;
+        }
+    </style>
+
+    <h1>Artist List</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Genre</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for artist in pagination %}
+            <tr>
+                <td>{{ artist.id }}</td>
+                <td>{{ artist.name }}</td>
+                <td>{{ artist.musicGenre }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="3">No artists found.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}

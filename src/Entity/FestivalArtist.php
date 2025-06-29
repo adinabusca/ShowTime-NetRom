@@ -15,35 +15,35 @@ class FestivalArtist
 
     #[ORM\ManyToOne(inversedBy: 'performances')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?festival $festival = null;
+    private ?Festival $festival = null;
 
     #[ORM\ManyToOne(inversedBy: 'performances')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?artist $artist = null;
+    private ?Artist $artist = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFestival(): ?festival
+    public function getFestival(): ?Festival
     {
         return $this->festival;
     }
 
-    public function setFestival(?festival $festival): static
+    public function setFestival(?Festival $festival): static
     {
         $this->festival = $festival;
 
         return $this;
     }
 
-    public function getArtist(): ?artist
+    public function getArtist(): ?Artist
     {
         return $this->artist;
     }
 
-    public function setArtist(?artist $artist): static
+    public function setArtist(?Artist $artist): static
     {
         $this->artist = $artist;
 

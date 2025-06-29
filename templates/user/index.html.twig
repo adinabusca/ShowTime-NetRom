@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User List{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            background-color: #0a1a2f;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #1c2b3a;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1c2b3a;
+        }
+
+        tr:nth-child(even) {
+            background-color: #132235;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Users</h1>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in pagination %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">No users found.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
