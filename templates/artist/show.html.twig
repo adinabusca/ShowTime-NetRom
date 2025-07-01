@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artist Details{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            background-color: #0a1a2f;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .artist-details {
+            max-width: 600px;
+            margin: 2rem auto;
+            background-color: #132235;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #1c2b3a;
+        }
+
+        .artist-details h1 {
+            margin-top: 0;
+            border-bottom: 1px solid #1c2b3a;
+            padding-bottom: 0.5rem;
+        }
+
+        .artist-details p {
+            margin: 0.5rem 0;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #4a90e2;
+        }
+    </style>
+
+    <div class="artist-details">
+        <h1>{{ artist.name }}</h1>
+
+        <p><span class="label">Music Genre:</span> {{ artist.musicGenre }}</p>
+    </div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Purchases for {{ user.email }}{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            background-color: #0a1a2f;
+            color: white;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #4a90e2;
+        }
+
+
+    </style>
+    <h1>Purchases for {{ user.email }}</h1>
+
+    <ul>
+        {% for purchase in purchases %}
+            <li>Purchase ID: {{ purchase.id }} — Festival: <a href="{{ path('app_festival_show', {id: purchase.festival.id}) }}">{{ purchase.festival.name }}</a></li>
+        {% else %}
+            <li>No purchases found for this user.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('app_user_show', {id: user.id}) }}">Back to User Details</a>
+{% endblock %}

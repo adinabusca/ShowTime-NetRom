@@ -29,4 +29,34 @@ final class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/user/{id}', name: 'app_user_show', methods: ['GET'])]
+    public function show(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException();
+        }
+        return $this->render('user/show.html.twig', ['user' => $user]);
+    }
+    #[Route('/user/delete/{id}', name: 'app_user_delete', methods: ['GET'])]
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found for id '.$id
+            );
+        }
+
+        foreach($user->getPurchases() as $purchase) {
+            $entityManager->remove($purchase);
+        }
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user');
+    }
+
 }

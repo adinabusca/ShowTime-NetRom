@@ -29,6 +29,7 @@ class FestivalFixtures extends Fixture
             $festival->setPrice(mt_rand(10, 100) . '.00');
 
             $manager->persist($festival);
+            $this->addReference('Festival ' . $i, $festival);
         }
 
         $manager->flush();

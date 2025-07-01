@@ -45,6 +45,7 @@
             <tr>
                 <th>ID</th>
                 <th>Email</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -52,6 +53,8 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>
+                    <td> <a href="{{ path('app_user_show', {id: user.id}) }}"><button>More Info</button></a> </td>
+
                 </tr>
             {% else %}
                 <tr>

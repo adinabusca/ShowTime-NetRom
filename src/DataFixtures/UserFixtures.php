@@ -24,6 +24,8 @@ class UserFixtures extends Fixture
 
             $manager->persist($user);
 
+            $this->addReference('user' . $i . "@example.com", $user);
+
         }
 
 

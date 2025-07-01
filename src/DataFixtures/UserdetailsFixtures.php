@@ -15,29 +15,24 @@ class UserdetailsFixtures extends Fixture implements DependentFixtureInterface
 //        // $product = new Product();
 //        // $manager->persist($product);
 //
-//        $userRepository = $manager->getRepository(User::class);
-//        for ($i = 1; $i <= 20; $i++) {
-//
-//            $user = $userRepository->find($i);
-//
-//            if (!$user) {
-//                echo "User with ID $i not found.\n";
-//                continue;
-//            }
-//
-//            $details = new Userdetails();
-//            $details->setFirstName("First{$i}");
-//            $details->setLastName("Last{$i}");
-//            $details->setAge(20 + $i);
-//            $roles = ['ADMIN', 'CUSTOMER'];
-//            $details->setRole($roles[array_rand($roles)]);
-//
-//            // Set bi-directional relation
-//            $details->setUser($user);
-//
-//
-//            $manager->persist($details);
-//        }
+        //$userRepository = $manager->getRepository(User::class);
+        for ($i = 1; $i <= 20; $i++) {
+
+            $user = $this->getReference( 'user' . $i .'@example.com', User::class,);
+
+            $details = new Userdetails();
+            $details->setFirstName("First{$i}");
+            $details->setLastName("Last{$i}");
+            $details->setAge(20 + $i);
+            $roles = ['ADMIN', 'CUSTOMER'];
+            $details->setRole($roles[array_rand($roles)]);
+
+            // Set bi-directional relation
+            $details->setUser($user);
+            $user->setUserDetails($details);
+
+            $manager->persist($details);
+        }
 
         $manager->flush();
     }

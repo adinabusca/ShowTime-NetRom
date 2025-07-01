@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Info{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            background-color: #0a1a2f;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+        }
+
+        .panel-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 20px;
+        }
+
+        .panel {
+            flex: 1;
+            border: 1px solid #1c2b3a;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #132235;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            border-bottom: 1px solid #1c2b3a;
+            padding-bottom: 0.5rem;
+        }
+
+        .delete-button {
+            margin-top: 1rem;
+            background-color: #2bc0af;
+            color: #070e1e;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .delete-button:hover {
+            background-color: #f8f6f6;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>User</h1>
+
+        <div class="panel-container">
+            <div class="panel">
+                <h2>Details</h2>
+                <p><strong>ID:</strong> {{ user.id }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <a href="{{ path('app_user_delete', {id: user.id}) }}" class="delete-button">Delete</a>
+
+
+            </div>
+
+            <div class="panel">
+                <h2>Additional Details</h2>
+                {% if user.userDetails %}
+                    <p><strong>First Name:</strong> {{ user.userDetails.firstName }}</p>
+                    <p><strong>Last Name:</strong> {{ user.userDetails.lastName }}</p>
+                    <p><strong>Age:</strong> {{ user.userDetails.age }}</p>
+                    <p><strong>Role:</strong> {{ user.userDetails.role }}</p>
+                    <a href="{{ path('app_user_purchase_show', {id: user.id}) }}" class="delete-button" style="background-color:#3498db; margin-left:10px;">View Purchases</a>
+
+                {% else %}
+                    <p>No additional details available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+
+
+    </div>
+{% endblock %}

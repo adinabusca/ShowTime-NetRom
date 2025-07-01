@@ -30,4 +30,14 @@ final class FestivalController extends AbstractController
             'controller_name' => 'FestivalController',
         ]);
     }
+    #[Route('/festival/{id}', name: 'app_festival_show', methods: ['GET'])]
+    public function show(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $festival = $entityManager->getRepository(Festival::class)->find($id);
+
+        if (!$festival) {
+            throw $this->createNotFoundException();
+        }
+        return $this->render('festival/show.html.twig', ['festival' => $festival]);
+    }
 }

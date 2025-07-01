@@ -20,6 +20,7 @@ class ArtistFixtures extends Fixture
             $artist->setMusicGenre($genres[array_rand($genres)]);
 
             $manager->persist($artist);
+            $this->addReference('Artist ' . $i, $artist);
         }
         $manager->flush();
     }

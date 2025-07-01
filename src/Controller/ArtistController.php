@@ -29,4 +29,14 @@ final class ArtistController extends AbstractController
             'controller_name' => 'ArtistController',
         ]);
     }
+    #[Route('/artist/{id}', name: 'app_artist_show', methods: ['GET'])]
+    public function show(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $artist = $entityManager->getRepository(Artist::class)->find($id);
+
+        if (!$artist) {
+            throw $this->createNotFoundException();
+        }
+        return $this->render('artist/show.html.twig', ['artist' => $artist]);
+    }
 }

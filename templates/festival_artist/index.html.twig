@@ -8,6 +8,15 @@
             background-color: #0a1a2f;
             color: white;
         }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #4a90e2;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -54,14 +63,24 @@
             <th>ID</th>
             <th>Festival</th>
             <th>Artist</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         {% for performance in pagination %}
             <tr>
                 <td>{{ performance.id }}</td>
-                <td>{{ performance.festival.name }}</td>
-                <td>{{ performance.artist.name }}</td>
+                <td>
+                    <a href="{{ path('app_festival_show', {id: performance.festival.id}) }}">
+                        {{ performance.festival.name }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('app_artist_show', {id: performance.artist.id}) }}">
+                        {{ performance.artist.name }}
+                    </a>
+                </td>
+                <td><a href="{{ path('app_festival_artist_delete', {id: performance.id}) }}">Delete</a></td>
             </tr>
         {% else %}
             <tr><td colspan="3">No performances found.</td></tr>
