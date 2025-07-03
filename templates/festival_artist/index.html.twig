@@ -80,14 +80,14 @@
                         {{ performance.artist.name }}
                     </a>
                 </td>
-                <td><a href="{{ path('app_festival_artist_delete', {id: performance.id}) }}">Delete</a></td>
+                <td><a href="{{ path('app_festival_artist_delete', {id: performance.id}) }}"><button type="button" class="btn btn-outline-light">Delete</button></a></td>
             </tr>
         {% else %}
             <tr><td colspan="3">No performances found.</td></tr>
         {% endfor %}
         </tbody>
     </table>
-
+    <td><a href="{{ path('app_festival_artist_new') }}"><button type="button" class="btn btn-outline-light">Create</button></a></td>
     {{ knp_pagination_render(pagination) }}
 {% endblock %}
 

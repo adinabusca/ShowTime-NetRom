@@ -57,6 +57,7 @@
             <th>Start</th>
             <th>End</th>
             <th>Price (€)</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -68,12 +69,18 @@
                 <td>{{ festival.startdate|date('Y-m-d') }}</td>
                 <td>{{ festival.enddate|date('Y-m-d') }}</td>
                 <td>{{ festival.price }}</td>
+                <td>
+                    <a href="{{ path('app_festival_edit', {id: festival.id}) }}"><button type="button" class="btn btn-outline-light">Edit</button></a>
+                    <a href="{{ path('app_festival_show', {id: festival.id}) }}"><button type="button" class="btn btn-outline-light">Show</button></a>
+                </td>
+
             </tr>
         {% else %}
             <tr><td colspan="6">No festivals found.</td></tr>
         {% endfor %}
         </tbody>
     </table>
+    <td><a href="{{ path('app_festival_new') }}"><button type="button" class="btn btn-outline-light">Create</button></a></td>
 
     {{ knp_pagination_render(pagination) }}
 {% endblock %}

@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Artist;
+use App\Entity\Festival;
 use App\Entity\FestivalArtist;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,5 +52,37 @@ final class FestivalArtistController extends AbstractController
 
 
         return $this->redirectToRoute('app_festival_artist');
+    }
+
+    #[Route('/festival/artist/new', name: 'app_festival_artist_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $festivalArtist = new FestivalArtist();
+
+        $form = $this->createFormBuilder($festivalArtist)
+            ->add('festival', EntityType::class, [
+                'class' => Festival::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select a festival',
+            ])
+            ->add('artist', EntityType::class, [
+                'class' => Artist::class,
+                'choice_label' => 'name',
+                'placeholder' => 'Select an artist',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($festivalArtist);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_festival_artist');
+        }
+
+        return $this->render('festival_artist/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

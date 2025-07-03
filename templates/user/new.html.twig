@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create User{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            background-color: #0a1a2f;
+            color: white;
+            font-family: sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 95%;
+            margin: 1em auto;
+        }
+
+        .form-container {
+            background-color: #132235;
+            border: 1px solid #1c2b3a;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        label.form-label {
+            color: white;
+        }
+
+        input.form-control, select.form-select {
+            background-color: #0a1a2f;
+            border: 1px solid #1c2b3a;
+            color: white;
+        }
+
+        input.form-control:focus, select.form-select:focus {
+            background-color: #0a1a2f;
+            border-color: #2bc0af;
+            box-shadow: 0 0 0 0.25rem rgba(43, 192, 175, 0.5);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #2bc0af;
+            border-color: #2bc0af;
+            color: #070e1e;
+        }
+
+        .btn-primary:hover {
+            background-color: #f8f6f6;
+            color: #070e1e;
+            border-color: #f8f6f6;
+        }
+
+        .form-errors {
+            color: #ff6b6b;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+        }
+
+        input.form-control, select.form-select {
+            background-color: white;       /* white input background */
+            color: #0a1a2f;                /* dark text inside inputs */
+            border: 1px solid #1c2b3a;    /* keep your border */
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+        }
+
+        input.form-control:focus, select.form-select:focus {
+            background-color: white;       /* keep white on focus */
+            border-color: #2bc0af;         /* teal border on focus */
+            box-shadow: 0 0 0 0.25rem rgba(43, 192, 175, 0.5);
+            color: #0a1a2f;                /* dark text on focus */
+        }
+
+
+    </style>
+    <div class="container mt-5">
+        <h1>Create New User</h1>
+        {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+
+        <div class="col-md-6">
+            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'inputEmail4'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.password, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-control', 'id': 'inputPassword4'}}) }}
+            {{ form_errors(form.password) }}
+        </div>
+
+        {# UserDetails fields, adjust fields as needed #}
+
+        <div class="col-md-6">
+            {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'id': 'inputFirstName'}}) }}
+            {{ form_errors(form.firstName) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'id': 'inputLastName'}}) }}
+            {{ form_errors(form.lastName) }}
+        </div>
+
+        <div class="col-md-4">
+            {{ form_label(form.age, 'Age', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.age, {'attr': {'class': 'form-control', 'id': 'inputAge'}}) }}
+            {{ form_errors(form.age) }}
+        </div>
+
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

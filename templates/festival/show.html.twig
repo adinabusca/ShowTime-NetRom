@@ -33,6 +33,20 @@
             font-weight: bold;
             color: #4a90e2;
         }
+
+        .performances {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #1c2b3a;
+        }
+
+        .performances ul {
+            padding-left: 1.2rem;
+        }
+
+        .performances li {
+            margin-bottom: 0.5rem;
+        }
     </style>
 
     <div class="festival-details">
@@ -42,5 +56,24 @@
         <p><span class="label">Start Date:</span> {{ festival.startDate ? festival.startDate|date('F j, Y') : 'N/A' }}</p>
         <p><span class="label">End Date:</span> {{ festival.endDate ? festival.endDate|date('F j, Y') : 'N/A' }}</p>
         <p><span class="label">Price:</span> ${{ festival.price }}</p>
+
+
     </div>
+    <div class="performances">
+        <h3 class="label">Performances:</h3>
+        {% if festival.performances|length > 0 %}
+            <ul>
+                {% for performance in festival.performances %}
+                    <li>
+                        {{ performance.artist.name }},
+                        {{ performance.artist.musicGenre }}
+                    </li>
+
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No performances listed for this festival.</p>
+        {% endif %}
+    </div>
+    <a href="{{ path('app_festival') }}"><button type="button" class="btn btn-outline-light">Back To Festival List</button></a>
 {% endblock %}

@@ -54,6 +54,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Genre</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -62,12 +63,17 @@
                 <td>{{ artist.id }}</td>
                 <td>{{ artist.name }}</td>
                 <td>{{ artist.musicGenre }}</td>
+                <td>
+                    <a href="{{ path('app_artist_edit', {id: artist.id}) }}"><button type="button" class="btn btn-outline-light">Edit</button></a>
+                    <a href="{{ path('app_artist_show', {id: artist.id}) }}"><button type="button" class="btn btn-outline-light">Show</button></a>
+                </td>
             </tr>
         {% else %}
             <tr><td colspan="3">No artists found.</td></tr>
         {% endfor %}
         </tbody>
     </table>
+    <td><a href="{{ path('app_artist_new') }}"><button type="button" class="btn btn-outline-light">Create</button></a></td>
 
     {{ knp_pagination_render(pagination) }}
 {% endblock %}
