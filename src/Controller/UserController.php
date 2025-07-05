@@ -8,12 +8,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -67,57 +70,37 @@ final class UserController extends AbstractController
     }
 
     #[Route('/user/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, Request $request): Response
     {
         $user = new User();
-        $userDetails = new Userdetails();
 
-        $form = $this->createFormBuilder()
-            ->add('email', EmailType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Email(),
-                    new Assert\Length(['max' => 255]),
-                ],
-            ])
-            ->add('password', PasswordType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length(['min' => 6]),
-                ],
-            ])
-            ->add('firstName', TextType::class, [
-                'constraints' => [new Assert\NotBlank()],
-            ])
-            ->add('lastName', TextType::class, [
-                'constraints' => [new Assert\NotBlank()],
-            ])
-            ->add('age', IntegerType::class, [
-                'constraints' => [new Assert\Positive()],
-            ])
+        $form = $this->createFormBuilder($user)
+            ->add('email', EmailType::class)
+            ->add('password', PasswordType::class)
+            ->add('save', SubmitType::class, [])
             ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            $plainPassword = $form->get('password')->getData();
+            // Hash the password
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plainPassword
+            );
 
-            $user->setEmail($data['email']);
-            $user->setPassword($data['password']);
+
+            $user->setPassword($hashedPassword);
+
             $user->setToken(bin2hex(random_bytes(16)));
 
-            $userDetails->setFirstName($data['firstName']);
-            $userDetails->setLastName($data['lastName']);
-            $userDetails->setAge($data['age']);
-            $userDetails->setRole('CUSTOMER'); //  hardcoded role
-
-            // Set the relation
-            $userDetails->setUser($user);
-            $user->setUserDetails($userDetails);
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
+
+
+            return $this->redirectToRoute('app_userdetails_new', ['userId' => $user->getId()]);
         }
 
         return $this->render('user/new.html.twig', [
