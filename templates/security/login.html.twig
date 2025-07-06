@@ -2,33 +2,119 @@
 
 {% block title %}Log in!{% endblock %}
 
-{% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #0a1a2f !important;
+            color: white;
+            font-family: sans-serif;
+        }
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+        .container {
+            max-width: 500px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background-color: #132235;
+            border-radius: 8px;
+            border: 1px solid #1c2b3a;
+        }
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #70c8d6;
+        }
 
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Remember me
-        </label>
-    </div>
+        label.form-label {
+            color: #70c8d6;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: block;
+        }
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+        input.form-control {
+            width: 100%;
+            background-color: white;
+            color: #0a1a2f;
+            border: 1px solid #1c2b3a;
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #2bc0af;
+            border: none;
+            color: #070e1e;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #1f8f85;
+        }
+
+        .alert {
+            background-color: #712b29;
+            color: #ffd7d7;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .checkbox {
+            margin-top: 1rem;
+        }
+
+        a {
+            color: #2bc0af;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 {% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if error %}
+            <div class="alert">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.userIdentifier }},
+                <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+
+        <h1>Please Sign In</h1>
+
+        <form method="post">
+            <label for="inputEmail" class="form-label">Email</label>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+
+            <label for="inputPassword" class="form-label">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" required>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="_remember_me"> Remember me
+                </label>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Sign in</button>
+        </form>
+    </div>
+{% endblock %}
+

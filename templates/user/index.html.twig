@@ -7,33 +7,55 @@
         body {
             background-color: #0a1a2f;
             color: white;
-            font-family: sans-serif;
         }
-
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            background-color: #132744;
+            margin-bottom: 20px;
         }
-
         th, td {
-            padding: 10px;
-            border: 1px solid #1c2b3a;
+            padding: 12px;
+            border: 1px solid #2d3e50;
             text-align: left;
         }
-
         th {
-            background-color: #1c2b3a;
+            background-color: #1f3a5f;
+        }
+        tr:hover {
+            background-color: #2b486a;
         }
 
-        tr:nth-child(even) {
-            background-color: #132235;
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a, .pagination span {
+            padding: 0.5em 1em;
+            color: white;
+            background-color: #1c2b3a;
+            border: 1px solid #2bc0af;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .pagination .current {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+            font-weight: bold;
+        }
+
+        .pagination a:hover {
+            background-color: #2bc0af;
+            color: #0a1a2f;
         }
     </style>
 
@@ -53,7 +75,7 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>
-                    <td> <a href="{{ path('app_user_show', {id: user.id}) }}"><button>More Info</button></a> </td>
+                    <td> <a href="{{ path('app_user_show', {id: user.id}) }}"><button class="btn btn-outline-light">More Info</button></a> </td>
 
                 </tr>
             {% else %}
@@ -63,5 +85,6 @@
             {% endfor %}
             </tbody>
         </table>
+        {{ knp_pagination_render(pagination) }}
     </div>
 {% endblock %}

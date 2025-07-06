@@ -28,26 +28,52 @@
         .pagination {
             display: flex;
             justify-content: center;
+            margin-top: 1rem;
             list-style: none;
-            padding-left: 0;
+            padding: 0;
         }
+
         .pagination li {
             margin: 0 5px;
         }
+
         .pagination a, .pagination span {
+            padding: 0.5em 1em;
             color: white;
-            padding: 6px 12px;
-            text-decoration: none;
-            background: #1f3a5f;
+            background-color: #1c2b3a;
+            border: 1px solid #2bc0af;
             border-radius: 4px;
+            text-decoration: none;
         }
+
         .pagination .current {
-            background: #4a90e2;
+            background-color: #2bc0af;
+            color: #0a1a2f;
+            font-weight: bold;
+        }
+
+        .pagination a:hover {
+            background-color: #2bc0af;
+            color: #0a1a2f;
         }
     </style>
 
     <h1>Artist List</h1>
-
+    <form method="get" class="mb-4" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;">
+        <div>
+            <label for="artist">Artist</label><br>
+            <input type="text" id="artist" name="artist" class="form-control" placeholder="Artist name"
+                   value="{{ artistSearch|default('') }}">
+        </div>
+        <div>
+            <button type="submit" class="btn btn-outline-light">Search</button>
+        </div>
+        {% if artistSearch %}
+            <div>
+                <a href="{{ path('app_artist') }}" class="btn btn-outline-dark" style="background-color: #2bc0af;">Reset</a>
+            </div>
+        {% endif %}
+    </form>
     <table>
         <thead>
         <tr>
@@ -69,7 +95,7 @@
                 </td>
             </tr>
         {% else %}
-            <tr><td colspan="3">No artists found.</td></tr>
+            <tr><td colspan="4">No artists found.</td></tr>
         {% endfor %}
         </tbody>
     </table>

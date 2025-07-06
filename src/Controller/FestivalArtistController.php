@@ -19,11 +19,26 @@ final class FestivalArtistController extends AbstractController
     public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
     {
 
+        $festivalSearch = $request->query->get('festival');
+        $artistSearch = $request->query->get('artist');
+
         $queryBuilder = $entityManager->getRepository(FestivalArtist::class)
             ->createQueryBuilder('fa')
-            ->leftJoin('fa.festival', 'f')->addSelect('f')
-            ->leftJoin('fa.artist', 'a')->addSelect('a')
-            ->getQuery();
+            ->join('fa.festival', 'f')
+            ->join('fa.artist', 'a')
+            ->addSelect('f', 'a');
+
+        if ($festivalSearch) {
+            $queryBuilder->andWhere('LOWER(f.name) LIKE :festivalName')
+                ->setParameter('festivalName', '%' . strtolower($festivalSearch) . '%');
+        }
+
+        if ($artistSearch) {
+            $queryBuilder->andWhere('LOWER(a.name) LIKE :artistName')
+                ->setParameter('artistName', '%' . strtolower($artistSearch) . '%');
+        }
+
+        $queryBuilder->orderBy('f.name', 'ASC');
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT results */
@@ -33,7 +48,8 @@ final class FestivalArtistController extends AbstractController
 
         return $this->render('festival_artist/index.html.twig', [
             'pagination' => $pagination,
-            'controller_name' => 'UserController',
+            'festivalSearch' => $festivalSearch,
+            'artistSearch' => $artistSearch,
         ]);
     }
 

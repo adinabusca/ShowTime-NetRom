@@ -4,13 +4,27 @@
 
 {% block body %}
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
         body {
             background-color: #0a1a2f;
             color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+            text-align: center;
         }
 
         a {
-            color: white;
+            color: #2bc0af;
             text-decoration: none;
         }
         a:hover {
@@ -18,17 +32,92 @@
             color: #4a90e2;
         }
 
+        .tickets-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            max-width: 1000px;
+            margin-top: 1rem;
+        }
 
+        .ticket {
+            background: linear-gradient(135deg, #1f3a5f 0%, #2bc0af 100%);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(43, 192, 175, 0.5);
+            padding: 1.5rem 2rem;
+            width: 320px;
+            color: white;
+            position: relative;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .ticket::before,
+        .ticket::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.5rem;
+            height: 3rem;
+            background: #0a1a2f;
+            border-radius: 0 50% 50% 0;
+            z-index: 1;
+        }
+        .ticket::after {
+            right: 0;
+            border-radius: 50% 0 0 50%;
+        }
+        .ticket::before {
+            left: 0;
+        }
+
+        .ticket-header {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .ticket-details {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .ticket-footer {
+            font-size: 0.9rem;
+            color: #d0f0e7;
+            text-align: right;
+        }
+
+        .back-link {
+            margin-top: 2rem;
+            display: inline-block;
+        }
     </style>
-    <h1>Purchases for {{ user.email }}</h1>
 
-    <ul>
-        {% for purchase in purchases %}
-            <li>Purchase ID: {{ purchase.id }} — Festival: <a href="{{ path('app_festival_show', {id: purchase.festival.id}) }}">{{ purchase.festival.name }}</a></li>
-        {% else %}
-            <li>No purchases found for this user.</li>
-        {% endfor %}
-    </ul>
+    <div>
+        <h1>Purchases for {{ user.email }}</h1>
 
-    <a href="{{ path('app_user_show', {id: user.id}) }}">Back to User Details</a>
+        <div class="tickets-container">
+            {% for purchase in purchases %}
+                <div class="ticket">
+                    <div class="ticket-header">Purchase ID: {{ purchase.id }}</div>
+                    <div class="ticket-details">
+                        Festival: <a href="{{ path('app_festival_show', {id: purchase.festival.id}) }}">{{ purchase.festival.name }}</a><br>
+                        Date: {{ purchase.festival.startdate|date('F j, Y') }} - {{ purchase.festival.enddate|date('F j, Y') }}
+                    </div>
+                    <div class="ticket-footer">Buyer: {{ user.email }}</div>
+                </div>
+            {% else %}
+                <p>No purchases found for this user.</p>
+            {% endfor %}
+        </div>
+
+        <a href="{{ path('app_user_show', {id: user.id}) }}" class="back-link">Back to User Details</a>
+    </div>
 {% endblock %}
+
