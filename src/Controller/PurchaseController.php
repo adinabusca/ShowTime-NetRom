@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Festival;
 use App\Entity\Purchase;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,5 +48,47 @@ final class PurchaseController extends AbstractController
             'user' => $user,
             'purchases' => $purchases,
         ]);
+    }
+
+    #[Route('/purchase/confirm/{festivalId}', name: 'app_purchase_confirm', methods: ['GET'])]
+    public function confirm(int $festivalId, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('You must be logged in.');
+        }
+
+        $festival = $entityManager->getRepository(Festival::class)->find($festivalId);
+        if (!$festival) {
+            throw $this->createNotFoundException('Festival not found');
+        }
+
+        return $this->render('purchase/confirm.html.twig', [
+            'festival' => $festival,
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/purchases/new/{festivalId}', name: 'app_purchase_new', methods: ['GET', 'POST'])]
+    public function new(int $festivalId,EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $festival = $entityManager->getRepository(Festival::class)->find($festivalId);
+
+        if (!$festival) {
+            throw $this->createNotFoundException('Festival not found');
+        }
+
+        $purchase = new Purchase();
+        $purchase->setUser($user);
+        $purchase->setFestival($festival);
+
+        $entityManager->persist($purchase);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_purchase_show', ['id' => $user->getId()]);
+
+
     }
 }

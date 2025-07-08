@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirm Purchase{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            background-image: url('/images/showtime-bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .confirm-purchase-container {
+            max-width: 600px;
+            margin: 3rem auto;
+            background: linear-gradient(135deg, #ffffff, #f2f9f9);
+            color: #0a1a2f;
+            border-left: 6px solid #2bc0af;
+            border-radius: 15px;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .confirm-purchase-container:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-left-color: #0a1a2f;
+            background: linear-gradient(135deg, #e7fbfb, #ffffff);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 2.2rem;
+            color: #2bc0af;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin: 0.8rem 0;
+        }
+
+        strong {
+            color: #2bc0af;
+        }
+
+        form {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        button.btn-confirm {
+            background-color: #2bc0af;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            color: #0a1a2f;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button.btn-confirm:hover {
+            background-color: #0a1a2f;
+            color: white;
+            border: 2px solid #2bc0af;
+        }
+
+        a.btn-cancel {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #2bc0af;
+            color: #2bc0af;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            line-height: 1.4;
+        }
+
+        a.btn-cancel:hover {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+            border-color: #2bc0af;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="confirm-purchase-container">
+        <h2>Confirm Your Purchase</h2>
+
+        <p><strong>Festival:</strong> {{ festival.name }}</p>
+        <p><strong>Location:</strong> {{ festival.location }}</p>
+        <p><strong>Your Email:</strong> {{ user.email }}</p>
+
+        <form action="{{ path('app_purchase_new', {festivalId: festival.id}) }}" method="POST">
+            <button type="submit" class="btn-confirm">Confirm Purchase</button>
+            <a href="{{ path('app_festival_show', {id: festival.id}) }}" class="btn-cancel">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,226 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artists{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            background-image: url('/images/showtime-bg.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .custom-navbar {
+            background-color: #0a1a2f !important;
+        }
+
+        .custom-navbar .nav-link,
+        .custom-navbar .navbar-brand {
+            color: #2bc0af !important;
+        }
+
+        .custom-navbar .nav-link:hover,
+        .custom-navbar .navbar-brand:hover {
+            color: #1f8f85 !important;
+        }
+
+        .custom-navbar .navbar-toggler-icon {
+            filter: invert(66%) sepia(44%) saturate(3399%) hue-rotate(146deg) brightness(89%) contrast(88%);
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a, .pagination span {
+            padding: 0.5em 1em;
+            color: white;
+            background-color: #1c2b3a;
+            border: 1px solid #2bc0af;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .pagination .current {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+            font-weight: bold;
+        }
+
+        .pagination a:hover {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+        }
+
+        .artist-cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .artist-card {
+            width: 90%;
+            max-width: 900px;
+            background: linear-gradient(135deg, white, #f2f9f9);
+            color: #0a1a2f;
+            border-left: 6px solid #2bc0af;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .artist-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-left-color: #0a1a2f;
+            background: linear-gradient(135deg, #ffffff, #e7fbfb);
+        }
+
+        .artist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .artist-card h2 {
+            font-size: 1.8rem;
+            color: #0a1a2f;
+            margin: 0;
+            flex: 1;
+            margin-right: 1rem;
+        }
+
+        .details-btn {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .details-btn:hover {
+            background-color: #0a1a2f;
+            color: white;
+            border-color: #2bc0af;
+        }
+
+        .artist-card p {
+            margin: 0.3rem 0;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .search_bar {
+            width: 300px;
+            height: 10px;
+            background: linear-gradient(135deg, white, #f2f9f9);
+            color: #0a1a2f;
+            border-left: 6px solid #2bc0af;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-outline-dark {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .btn-outline-dark:hover {
+            background-color: #1f8f85;
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="{{ path('app_homepage') }}">ShowTime</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('customer_homepage') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_festival') }}">Festivals</a>
+                    </li>
+
+
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_user_show', {'id': app.user.id}) }}">My Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <h1>Artist List</h1>
+
+    <form method="get" class="mb-4" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;">
+        <div>
+            <label for="artist">Artist</label><br>
+            <input type="text" id="artist" name="artist" class="search_bar" placeholder="Artist name"
+                   value="{{ artistSearch|default('') }}">
+        </div>
+        <div>
+            <button type="submit" class="details-btn">Search</button>
+        </div>
+        {% if artistSearch %}
+            <div>
+                <a href="{{ path('app_artist') }}" class="btn-outline-dark">Reset</a>
+            </div>
+        {% endif %}
+    </form>
+
+    <div class="artist-cards-container">
+        {% for artist in pagination %}
+            <div class="artist-card">
+                <div class="artist-header">
+                    <h2>{{ artist.name }}</h2>
+                    <a href="{{ path('app_artist_show', {id: artist.id}) }}" class="details-btn">View Details</a>
+                </div>
+                <p><strong>Genre:</strong> {{ artist.musicGenre }}</p>
+
+            </div>
+        {% else %}
+            <p>No artists found.</p>
+        {% endfor %}
+    </div>
+
+
+
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}
+

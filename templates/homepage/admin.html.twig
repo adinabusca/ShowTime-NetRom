@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Customer Dashboard{% endblock %}
+{% block stylesheets %}
+    <style>
+
+        body {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            color: white; /* Optional: text color for readability */
+        }
+        .custom-navbar {
+            background-color: #0a1a2f !important;
+        }
+
+        .custom-navbar .nav-link,
+        .custom-navbar .navbar-brand {
+            color: #2bc0af !important;
+        }
+
+        .custom-navbar .nav-link:hover,
+        .custom-navbar .navbar-brand:hover {
+            color: #1f8f85 !important; /* Slightly darker teal for hover */
+        }
+
+        /* Override the navbar-toggler icon color */
+        .custom-navbar .navbar-toggler-icon {
+            filter: invert(66%) sepia(44%) saturate(3399%) hue-rotate(146deg) brightness(89%) contrast(88%);
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="{{ path('app_homepage') }}">ShowTime</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_festival') }}">Festivals</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_artist') }}">Artists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_user') }}">Users</a>
+                    </li>
+
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_user_show', {'id': app.user.id}) }}">My Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container text-center mt-5">
+        <h1 class="text-dark">
+            Welcome,
+            {{ app.user and app.user.userDetails ? app.user.userDetails.firstName : 'Guest' }}!
+        </h1>
+
+        <h2 class="text-black">This is your personalized admin dashboard. Add, delete, edit and view festivals, artists and users.</h2>
+    </main>
+{% endblock %}

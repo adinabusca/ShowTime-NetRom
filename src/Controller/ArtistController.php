@@ -34,7 +34,14 @@ final class ArtistController extends AbstractController
             10 /* limit per page */
         );
 
-        return $this->render('artist/index.html.twig', [
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->render('artist/index.html.twig', [
+                'pagination' => $pagination,
+                'artistSearch' => $artistSearch,
+            ]);
+        }
+
+        return $this->render('artist/customer_index.html.twig', [
             'pagination' => $pagination,
             'artistSearch' => $artistSearch,
         ]);

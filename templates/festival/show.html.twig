@@ -2,52 +2,123 @@
 
 {% block title %}Festival Details{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
     <style>
-        body {
-            background-color: #0a1a2f;
-            color: white;
-            font-family: sans-serif;
+         body{
+             background-color: #b2dfe4;
+         }
+        .festival-details {
+            max-width: 700px;
+            margin: 3rem auto;
+            background: linear-gradient(135deg, #ffffff, #f2f9f9);
+            color: #0a1a2f;
+            border-left: 6px solid #2bc0af;
+            border-radius: 15px;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .festival-details {
-            max-width: 600px;
-            margin: 2rem auto;
-            background-color: #132235;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #1c2b3a;
+        .festival-details:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-left-color: #0a1a2f;
+            background: linear-gradient(135deg, #e7fbfb, #ffffff);
         }
 
         .festival-details h1 {
             margin-top: 0;
-            border-bottom: 1px solid #1c2b3a;
-            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 2.4rem;
+            font-weight: 700;
         }
 
         .festival-details p {
-            margin: 0.5rem 0;
+            margin: 0.6rem 0;
+            font-size: 1.1rem;
+            line-height: 1.5;
         }
 
         .label {
-            font-weight: bold;
-            color: #4a90e2;
+            font-weight: 700;
+            color: #2bc0af;
+            margin-right: 0.4rem;
+        }
+
+        .btn-primary {
+            background-color: #2bc0af;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            color: #0a1a2f;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0a1a2f;
+            color: white;
+            border: 2px solid #2bc0af;
         }
 
         .performances {
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid #1c2b3a;
+            margin-top: 2rem;
+            background: #0a1a2f;
+            border-radius: 15px;
+            padding: 1.5rem 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .performances h3 {
+            color: #2bc0af;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1.6rem;
         }
 
         .performances ul {
+            list-style-type: disc;
             padding-left: 1.2rem;
         }
 
         .performances li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
+            font-size: 1.1rem;
+            color: #e1e7e8;
+        }
+
+        .btn-outline-light {
+            background-color: transparent;
+            border: 2px solid #2bc0af;
+            color: #2bc0af;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            margin: 3rem auto 3rem;
+            display: block;
+            max-width: 180px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+            border-color: #2bc0af;
         }
     </style>
+{% endblock %}
+
+{% block body %}
 
     <div class="festival-details">
         <h1>{{ festival.name }}</h1>
@@ -57,23 +128,23 @@
         <p><span class="label">End Date:</span> {{ festival.endDate ? festival.endDate|date('F j, Y') : 'N/A' }}</p>
         <p><span class="label">Price:</span> ${{ festival.price }}</p>
 
-
+        {% if is_granted('ROLE_CUSTOMER') %}
+            <a href="{{ path('app_purchase_confirm', {festivalId: festival.id}) }}" class="btn-primary">Buy Ticket</a>
+        {% endif %}
     </div>
+
     <div class="performances">
-        <h3 class="label">Performances:</h3>
+        <h3>Performances:</h3>
         {% if festival.performances|length > 0 %}
             <ul>
                 {% for performance in festival.performances %}
-                    <li>
-                        {{ performance.artist.name }},
-                        {{ performance.artist.musicGenre }}
-                    </li>
-
+                    <li>{{ performance.artist.name }}, {{ performance.artist.musicGenre }}</li>
                 {% endfor %}
             </ul>
         {% else %}
             <p>No performances listed for this festival.</p>
         {% endif %}
     </div>
-    <a href="{{ path('app_festival') }}"><button type="button" class="btn btn-outline-light">Back To Festival List</button></a>
+
+    <a href="{{ path('app_festival') }}" class="btn-outline-light">Back To Homepage</a>
 {% endblock %}

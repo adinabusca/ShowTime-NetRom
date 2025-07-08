@@ -20,6 +20,7 @@ final class FestivalController extends AbstractController
     #[Route('/festival', name: 'app_festival', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
     {
+
         $festivalSearch = $request->query->get('festival');
 
         $queryBuilder = $entityManager->getRepository(Festival::class)
@@ -38,7 +39,15 @@ final class FestivalController extends AbstractController
             10 /* limit per page */
         );
 
-        return $this->render('festival/index.html.twig', [
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->render('festival/index.html.twig', [
+                'pagination' => $pagination,
+                'festivalSearch' => $festivalSearch,
+            ]);
+        }
+
+
+        return $this->render('festival/customer_index.html.twig', [
             'pagination' => $pagination,
             'festivalSearch' => $festivalSearch,
         ]);
