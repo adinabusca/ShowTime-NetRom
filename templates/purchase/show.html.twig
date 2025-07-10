@@ -119,24 +119,66 @@
             color: #0a1a2f;
             border-color: #2bc0af;
         }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a, .pagination span {
+            padding: 0.5em 1em;
+            color: white;
+            background-color: #1c2b3a;
+            border: 1px solid #2bc0af;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .pagination .current {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+            font-weight: bold;
+        }
+
+        .pagination a:hover {
+            background-color: #2bc0af;
+            color: #0a1a2f;
+        }
+
     </style>
 
     <div>
-        <h1>Purchases for {{ user.email }}</h1>
+        <h1>Purchases for {{ user.userDetails.firstName }}</h1>
 
         <div class="tickets-container">
-            {% for purchase in purchases %}
+            {% for purchase in pagination %}
                 <div class="ticket">
                     <div class="ticket-header">Purchase ID: {{ purchase.id }}</div>
                     <div class="ticket-details">
                         Festival: <a href="{{ path('app_festival_show', {id: purchase.festival.id}) }}">{{ purchase.festival.name }}</a><br>
                         Date: {{ purchase.festival.startdate|date('F j, Y') }} - {{ purchase.festival.enddate|date('F j, Y') }}
+                        {% if purchase.festival.enddate < "now"|date %}
+                            <span style="color:#f55; font-weight: bold;">Status: Expired</span>
+                        {% else %}
+                            <span style="color:#2bc0af; font-weight: bold;">Status: Active</span>
+                        {% endif %}
                     </div>
                     <div class="ticket-footer">Buyer: {{ user.email }}</div>
                 </div>
             {% else %}
                 <p>No purchases found for this user.</p>
             {% endfor %}
+        </div>
+
+        <div class="pagination-wrapper">
+            {{ knp_pagination_render(pagination) }}
         </div>
 
         <a href="{{ path('app_user_show', {id: user.id}) }}" class="btn-outline-light">Back to User Details</a>

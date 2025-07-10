@@ -35,18 +35,28 @@ final class PurchaseController extends AbstractController
         ]);
     }
     #[Route('/purchases/user/{id}', name: 'app_user_purchase_show', methods: ['GET'])]
-    public function show(EntityManagerInterface $entityManager, int $id): Response
+    public function show(EntityManagerInterface $entityManager,PaginatorInterface $paginator, Request $request, int $id): Response
     {
         $user = $entityManager->getRepository(User::class)->find($id);
 
         if (!$user) {
             throw $this->createNotFoundException();
         }
-        $purchases = $user->getPurchases();
+        $queryBuilder = $entityManager->getRepository(Purchase::class)
+            ->createQueryBuilder('p')
+            ->where('p.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('p.id', 'DESC');
+
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            5 // Items per page
+        );
 
         return $this->render('purchase/show.html.twig', [
             'user' => $user,
-            'purchases' => $purchases,
+            'pagination' => $pagination,
         ]);
     }
 
@@ -80,11 +90,20 @@ final class PurchaseController extends AbstractController
             throw $this->createNotFoundException('Festival not found');
         }
 
-        $purchase = new Purchase();
-        $purchase->setUser($user);
-        $purchase->setFestival($festival);
+        $ticketCount = (int) $request->request->get('ticket_count', 1);
+        if ($ticketCount < 1 || $ticketCount > 10) {
+            throw new \InvalidArgumentException('Invalid number of tickets.');
+        }
 
-        $entityManager->persist($purchase);
+        for ($i = 0; $i < $ticketCount; $i++){
+            $purchase = new Purchase();
+            $purchase->setUser($user);
+            $purchase->setFestival($festival);
+
+            $entityManager->persist($purchase);
+
+        }
+
         $entityManager->flush();
 
         return $this->redirectToRoute('app_user_purchase_show', ['id' => $user->getId()]);

@@ -95,13 +95,13 @@
 
         <div class="col-md-6">
             {{ form_label(form.startdate, 'Start Date', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.startdate, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.startdate, {'attr': {'class': 'form-control', 'min': "now"|date("Y-m-d")}}) }}
             {{ form_errors(form.startdate) }}
         </div>
 
         <div class="col-md-6">
             {{ form_label(form.enddate, 'End Date', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.enddate, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.enddate, {'attr': {'class': 'form-control', 'min': (date("+1 day"))|date("Y-m-d")}}) }}
             {{ form_errors(form.enddate) }}
         </div>
 

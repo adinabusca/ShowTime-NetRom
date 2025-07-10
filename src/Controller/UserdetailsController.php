@@ -68,7 +68,7 @@ final class UserdetailsController extends AbstractController
             $em->persist($details);
             $em->flush();
 
-            return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('userdetails/new.html.twig', [

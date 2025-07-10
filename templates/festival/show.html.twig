@@ -129,7 +129,15 @@
         <p><span class="label">Price:</span> ${{ festival.price }}</p>
 
         {% if is_granted('ROLE_CUSTOMER') %}
-            <a href="{{ path('app_purchase_confirm', {festivalId: festival.id}) }}" class="btn-primary">Buy Ticket</a>
+            {% set today = "now"|date('Y-m-d') %}
+            {% set festivalEnd = festival.endDate ? festival.endDate|date('Y-m-d') : null %}
+
+            {% if festivalEnd and festivalEnd >= today %}
+                <a href="{{ path('app_purchase_confirm', {festivalId: festival.id}) }}" class="btn-primary">Buy Ticket</a>
+            {% else %}
+                <button class="btn-primary" disabled>Ticket Sales Closed</button>
+            {% endif %}
+
         {% endif %}
     </div>
 

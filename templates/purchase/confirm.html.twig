@@ -102,11 +102,20 @@
 
         <p><strong>Festival:</strong> {{ festival.name }}</p>
         <p><strong>Location:</strong> {{ festival.location }}</p>
+        <p><strong>Price:</strong> ${{ festival.price }}/person</p>
         <p><strong>Your Email:</strong> {{ user.email }}</p>
 
+
         <form action="{{ path('app_purchase_new', {festivalId: festival.id}) }}" method="POST">
-            <button type="submit" class="btn-confirm">Confirm Purchase</button>
-            <a href="{{ path('app_festival_show', {id: festival.id}) }}" class="btn-cancel">Cancel</a>
+            <div style="margin-bottom: 1rem;">
+                <label for="ticket_count" style="font-weight: bold; margin-right: 0.5rem;">Number of Tickets:</label>
+                <input type="number" id="ticket_count" name="ticket_count" value="1" min="1" required style="padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px solid #ccc;">
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 1rem;">
+                <button type="submit" class="btn-confirm">Confirm Purchase</button>
+                <a href="{{ path('app_festival_show', {id: festival.id}) }}" class="btn-cancel">Cancel</a>
+            </div>
         </form>
     </div>
 {% endblock %}

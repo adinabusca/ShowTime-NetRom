@@ -171,7 +171,7 @@
                         {{ performance.artist.name }}
                     </a>
                 </td>
-                <td><a href="{{ path('app_festival_artist_delete', {id: performance.id}) }}"><button type="button" class="btn btn-outline-light">Delete</button></a></td>
+                <td><a href="{{ path('app_festival_artist_delete', {id: performance.id}) }}" onclick="return confirm('Are you sure you want to delete this performance?');"><button type="button" class="btn btn-outline-light">Delete</button></a></td>
             </tr>
         {% else %}
             <tr><td colspan="3">No performances found.</td></tr>
